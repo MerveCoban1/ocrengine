@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+{% load static %}
+{% load i18n %}
+{% block metatagcontent %}
+    <title>OCR Engine</title>
+    <meta name="keywords" content="OCR Engine">
+    <meta name="description"
+          content="OCR Engine">
+{% endblock %}
+{% block content %}
+    <style>
+        img {
+            max-width: 100%;
+        }
+    </style>
+
+    <div class="container-fluid">
+
+           <button class="btn btn-success" data-toggle="modal" data-target="#uploadModal"><i
+                                            class="icon-upload"></i>Upload</button>
+        <div class="row">
+        <!-- Modal -->
+        <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="uploadModalLabel">{% translate 'ChooseImage' %}...</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <form method="post" id="uploadForm" action="{% url 'upload_file' %}" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            {% csrf_token %}
+                            <input type="file" name="file" accept=".jpg,.jpeg,.png" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="button button-border button-rounded button-teal mt-3"
+                                    data-dismiss="modal">{% translate 'Close' %}</button>
+                            <button type="submit"
+                                    class="button button-border button-rounded button-teal mt-3 btnUploadFromLocal">
+                                {% translate 'Upload' %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+         <div class="divider"><i class="icon-circle"></i></div>
+        <div class="row">
+
+            <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+                <div class="tabs tabs-bordered tabs-justify clearfix" id="tab-2">
+                    <ul class="tab-nav clearfix">
+                        <li><a href="#tabs-1">
+                            {% translate "Image" %}
+                        </a></li>
+                    </ul>
+
+                    <div class="tab-container" style="padding:0px;">
+                        <div class="tab-content clearfix" style="padding:0px;" id="tabs-1">
+                            <nav class="navbar navbar-expand-lg navbar-light"
+                                 style="padding-bottom:0px; border-bottom:1px solid lightgray;">
+                                <div class="collapse navbar-collapse" id="navbarText">
+
+                                    <ul class="navbar-nav mr-auto">
+                                        <li class="nav-item active">
+                                            <button class="btn btn-success" id="btnOCR">
+                                            {% translate "Make OCR" %}
+                                        </a>
+                                    </li>                                     
+                                    <li class="nav-item active">
+                                                <select class="custom-select" id="versionId" name="versionId" title="">
+                                                    <option value="eng">English</option>
+                                                    <option value="chi">Chinese</option>
+                                                </select>                                        
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+                                <div>
+                                </div>
+                            </nav>
+                            <div style="padding:20px;">
+                                {% csrf_token %}
+                                {% if imageurl %}
+                                    <input type="text" id="imageid" value="{{ imageid }}" readonly hidden>
+                                    <img id="target" class="card-img-bottom img-fluid" src=" {{ imageurl }}"
+                                         alt="Card image cap">
+                                {% endif %}
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-6 col-xs-6 col-md-6 col-sm-6">
+                <div class="tabs tabs-bordered tabs-justify clearfix" id="tab-2">
+                    <ul class="tab-nav clearfix">
+                        <li><a href="#tabs-1">
+                            {% translate "Text" %}
+                        </a></li>
+                    </ul>
+                    <div class="tab-container" style="padding:0px;">
+                        <div id="txtResult">
+                             <div class="form-group">
+   
+    <textarea class="form-control" id="txtResult" rows="7"></textarea>
+  </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'js/upload.js' %}"></script>
+    <script src="{% static 'js/crop-manager.js' %}"></script>
+{% endblock %}

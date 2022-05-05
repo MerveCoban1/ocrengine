@@ -1,0 +1,144 @@
+@import url('http://fonts.googleapis.com/css?family=Open+Sans:400,300');
+
+* { margin: 0; padding: 0; }
+
+
+@font-face {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: 300;
+  src:
+  local('hanzala') url('../font/Hanzala.ttf') format('truetype'),
+}
+
+/* @font-face{
+font-family: hanzala;
+src: url('static "font/Hanzala.ttf"');
+font-weight: bold;} */
+
+html
+{
+	position: relative;
+  	min-height: 100%;
+}
+
+body
+{
+	font-family: 'Open Sans', Helvetica;
+	margin-bottom: 60px;
+  
+}
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	line-height: 60px;
+	background-color: #f5f5f5;
+	font-size: 14px;
+}
+
+.loader {
+    border: 8px solid #f3f3f3; 
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.imagesubmenu
+{
+	margin: 10px;
+	}
+#ottoman {
+	font-family: 'hanzala';
+	font-size: 1.6em
+}
+.wrapper{
+	width: 100%;
+	min-height: 400px;
+	margin-bottom: 30px;
+}
+.left_side{
+	width: 48%;
+	height: 400px;
+	float: left;
+	background-color: rgb(238, 232, 232);
+}
+
+.right_side{
+	width: 48%;
+	height: 400px;
+	float: left;
+	margin-left: 10px;
+     background-color:rgb(236, 236, 243)
+}
+
+.ottomanimage{
+    max-height: 600px !important;
+    max-width: 100%;
+}
+
+.process-step .btn:focus {
+    outline: none
+  }
+
+  .process {
+    display: table;
+    width: 100%;
+    position: relative
+  }
+
+  .process-row {
+    display: table-row
+  }
+
+  .process-step button[disabled] {
+    opacity: 1 !important;
+    filter: alpha(opacity=100) !important
+  }
+
+  .process-row:before {
+    top: 40px;
+    bottom: 0;
+    position: absolute;
+    content: " ";
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    /* z-order: 0; */
+  }
+
+  .process-step {
+    display: table-cell;
+    text-align: center;
+    position: relative
+  }
+
+  .process-step p {
+    margin-top: 4px
+  }
+
+  .btn-circle {
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    font-size: 12px;
+    border-radius: 50%
+  }
+
+.modal-dialog{
+      overflow-y: initial !important
+}
+.modal-body{
+    overflow-y: auto;
+}
+
+
+

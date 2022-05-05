@@ -1,0 +1,7 @@
+@font-face {
+  font-family: Lato;
+  font-style: normal;
+  font-weight: 300;
+  src:
+  local('hanzala') url('../font/Hanzala.ttf') format('truetype'),
+}
