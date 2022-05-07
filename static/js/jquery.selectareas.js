@@ -499,23 +499,15 @@
                 let image = {
                     id: 0,
                     name: '',
-                    x: '',
-                    y: '',
-                    w: '',
-                    h: '',
                     font: '',
                 };
                 let realCoordinates = {
-                    id: 0,
-                    name: '',
                     x: '',
                     y: '',
                     w: '',
                     h: '',
-                    font: '',
                 };
                 $(".number-area").click(function (e) {
-
 
                     console.log("number-areaya tıklandı.Tıklanan area id:");
                     console.log(area.id);
@@ -524,123 +516,89 @@
                     var font_choices = $('select[name="font_choice"]');
                     var font_choice = 0;
                     font_choice = font_choices.eq(area.id).val();
-                    //******************************* */
+
                     var font_name;
-                    var save = function () {
-                        image.id = area.id;
-                        image.name = image_name;
-                        image.x = area.x;
-                        image.y = area.y;
-                        image.w = area.width;
-                        image.h = area.height;
-                        if (font_choice == 1) {
-                            font_name = 'Bilinmiyor';
-                        } else if (font_choice == 2) {
-                            font_name = 'Nesih';
-                        } else if (font_choice == 3) {
-                            font_name = 'Rika';
+                   
+                    image.id = area.id;
+                    image.name = image_name;
+
+                    if (font_choice == 1) {
+                        font_name = 'Bilinmiyor';
+                    } else if (font_choice == 2) {
+                        font_name = 'Nesih';
+                    } else {
+                        font_name = 'Diger';
+                    }
+                    image.font = font_name;
+                    console.log("AREA" + JSON.stringify(area))
+                    
+
+                    //*********************************************************** */
+
+                    const imageid = $("#imageid").val();
+                    const version = $("#versionId").val();
+                    const is_crop_image = $("#imageid").data("iscrop");
+                    
+                    const imageurl = $("#image").attr("src");
+                    if (imageid === null || imageid === "" || imageid === undefined) {
+                        toastr.error("Resim yüklenmesinde hata oluştu!")
+                        return;
+                    }
+                    //get real image size////////////////////////
+
+                    var imgLoader = new Image();
+                    var height;
+                    var width;
+                    imgLoader.src = imageurl;
+                    imgLoader.onload = function () {
+                        height = imgLoader.height;
+                        width = imgLoader.width;
+                        console.log("width" + width)
+                        console.log("heigth" + height)
+
+                        ratioWidth = width / $('#image').width();
+                        ratioHeight = height / $('#image').height();
+
+                        
+                        console.log("$('#image').width()" + $('#image').width())
+
+                        realCoordinates.x = Math.round(area.x * ratioWidth);
+                        realCoordinates.y = Math.round(area.y * ratioHeight);
+                        realCoordinates.w = Math.round(area.width * ratioWidth);
+                        realCoordinates.h = Math.round(area.height * ratioHeight);
+
+                        console.log("realCoordinates" + JSON.stringify(realCoordinates));
+
+                        if (is_crop_image) {
+                            handlers.cropAndOcrImageOKButtonClick(imageid);
                         } else {
-                            font_name = 'Diger';
-                        }
-                        image.font = font_name;
-                        console.log("AREA" + JSON.stringify(area))
-
-                        //get real image size////////////////////////
-
-                        var imgLoader = new Image();
-                        var height;
-                        var width
-                        imgLoader.src = "./images/image.jpg";
-                        imgLoader.onload = function () {
-                            height = imgLoader.height;
-                            width = imgLoader.width;
-                            console.log("width" + width)
-
-                            ratioWidth = width / $('#image').width();
-                            ratioHeight = height / $('#image').height();
-
-                            console.log("width" + width)
-                            console.log("$('#image').width()" + $('#image').width())
-
-                            realCoordinates.id = area.id;
-                            realCoordinates.name = image_name;
-                            realCoordinates.x = area.x * ratioWidth;
-                            realCoordinates.y = area.y * ratioHeight;
-                            realCoordinates.w = area.width * ratioWidth;
-                            realCoordinates.h = area.height * ratioHeight;
-
-                            console.log("realCoordinates" + JSON.stringify(realCoordinates));
-
-                            $.ajax({
-                                type: "POST",
-                                url: './back/saveOCRImage.php',
-                                data: realCoordinates,
-                                success: function (result) {
-                                    console.log("realCoordinates" + JSON.stringify(realCoordinates))
-                                    console.log("im2:" + result);
-
-
-
-                                    //OCR isteğimizi yapalım
-                                    console.log("ocr isteği yapıyoruz");
-                                    var token;
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "back/token.php",
-                                        data: {
-                                            "username": "test1234",
-                                            "password": "test1234",
-                                        },
-                                        success: function (data) {
-
-                                            obj = data.slice(data.lastIndexOf('{'));
-                                            obj = JSON.parse(obj)
-                                            token = obj.access
-                                            console.log("token : " + token);
-                                            console.log("token received successfully");
-                                        },
-                                        error: function () {
-                                            console.log("can not take token");
-                                        },
-                                    }).then(function () {
-
-                                        $.ajax({
-                                            type: "POST",
-                                            url: "back/ocr2.php",
-                                            data: {
-                                                "username": "test1234",
-                                                "image_url": "http://www.nurdankaya.me/images/cropped/image.jpg",
-                                                "token": token,
-                                            },
-                                            success: function (data) {
-                                                const obj = JSON.parse(data);
-                                                console.log("ocr result received successfully");
-                                                //obj OCRResult.json'a kaydedilecek
-                                                var jsonString = JSON.stringify(obj.image_detail);
-                                                $.ajax({
-                                                    type: "POST",
-                                                    url: "back/saveOcr.php",
-                                                    data: { "data": jsonString },
-                                                    success: function (data) {
-                                                        console.log("sonuc  " + data);
-                                                        //ocrResult sayfasına geçelim
-                                                        $(location).attr('href', 'ocrResult.html');
-                                                    },
-                                                    error: function () {
-                                                        console.log("can not save ocr data");
-                                                    },
-                                                });
-                                            },
-                                            error: function () {
-                                                console.log("can not ocr");
-                                            },
-                                        });
-                                    });
+                            window.waitBox(true);
+                            //OCR isteğimizi yapalım
+                            console.log("ocr isteği yapıyoruz"); 
+                            console.log("gönderilecek resim kordinatları:");
+                            console.log(image);
+                            console.log("realCoordinates.x:",realCoordinates.x);
+                            $.post('ocr', {
+                                imageid: imageid,
+                                coords_font: image.font,
+                                coords_x: realCoordinates.x,
+                                coords_y: realCoordinates.y,
+                                coords_w: realCoordinates.w,
+                                coords_h: realCoordinates.h,
+                                version: version,
+                                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
+                            }).done(function (result) {
+                                window.waitBox(false);
+                                if (result.success) {
+                                    toastr.success(result.message ? result.message : "İşlem başarılı bir şekilde tamamlandı.");
+                                    $("textarea#txtResult").val(result.text);                                           
+                                
+                                } else {
+                                    toastr.error(result.message);
                                 }
                             });
                         }
                     }
-                    save();
 
                 });
             },
@@ -768,8 +726,7 @@
                     <select size="1" name="font_choice">
                         <option value="1">Bilinmiyor</option>
                         <option value="2">Nesih</option>
-                        <option value="3">Rika</option>
-                        <option value="4">Diger</option>
+                        <option value="3">Diger</option>
                     </select>
                 </span>
             </div>`)))

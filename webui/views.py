@@ -101,15 +101,47 @@ def improve(imageurl, lang):
 
 
 def ocr(request):
+    print("ocr metoduna geldik")
     context = {"success": False}
     try:
         imageid = request.POST["imageid"]
         version = request.POST["version"]
+      
+        coords_font = request.POST["coords_font"]
+        coords_x = request.POST["coords_x"]
+        coords_y = request.POST["coords_y"]
+        coords_w = request.POST["coords_w"]
+        coords_h = request.POST["coords_h"]
+
         image = Image.objects.filter(imageid=imageid).get()
         path = image.Image.url[1:]
+
+        #token alınacak
+
+
+
+        #resmi gelen koordinatlara göre kırpalım
+        img = cv2.imread(path)
+        print("kırpma işlemini yapalım")
+        
+        print(coords_x,coords_y,coords_w,coords_h)
+
+        yh= int(coords_y)+int(coords_h)
+        xw= int(coords_x)+int(coords_w)
+        
+        cropped_img=img[int(coords_y):yh, int(coords_x):xw]
+        print(cropped_img)
+        print("kırpılmış resmi kaydedelim")
+        cv2.imwrite("./media/images/cropped_image.png", cropped_img)
+        print("kayıt gerçekleşti")
+
+        #upload-image isteği yapılacak
+
+
+
+
         #result = improve(path, version)
 
-        img = cv2.imread(path)
         gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
         ret2, th2 = cv2.threshold(
             gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)

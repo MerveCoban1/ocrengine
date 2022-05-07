@@ -1,0 +1,7 @@
+Hocaya Danışılacaklar
+1- makine öğrenmesi kodu yüklendi. resim yüklendiğinde tahmin işlemi gerçekleştiriliyor ancak bu tahmin henüz kullanılmıyo. Bu bilgi nereye gönderilecek
+
+Yapılacaklar
+1- views.py ocr metodunda token alınacak
+2- views.py ocr metodunda media/images altındaki cropped_image.png dosyası ocr a yollanacak
+3- ocr sonucu olan 2.sayfa oluşturulacak
