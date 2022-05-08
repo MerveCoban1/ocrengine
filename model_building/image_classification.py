@@ -8,7 +8,7 @@ from tensorflow import keras
 from tensorflow.keras import layers
 from tensorflow.keras.models import Sequential
 
-directory="C:/Users/coban/OneDrive/Masaüstü/deneme/dataset"
+directory="dataset"
 
 batch_size = 16
 img_height = 180
