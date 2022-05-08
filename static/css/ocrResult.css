@@ -1,0 +1,61 @@
+
+.section1{
+    padding: 0;
+    border:0.1px solid gray;
+    width: 100%;
+    height: auto;
+    float: left;
+    overflow: auto;
+}
+.section2{
+     border-right:0.1px solid gray;
+    border-top:0.1px solid gray;
+    border-bottom:0.1px solid gray;
+   
+    width: 100%;
+    height: auto;
+    float: left;
+    overflow: auto;
+}
+
+#source{
+   
+    position: relative;
+    width: 100%;
+    
+}
+#ocrDiv{
+    margin-top: 40px;
+}
+/*#buttonDiv{
+    width: 800px;
+    height: 40px;
+}*/
+.canvas {
+    display: none;
+    border: 2px solid blue;
+    position: 'absolute', 
+}
+.container {
+    position: relative;
+    text-align: center;
+    color: black;
+}
+
+#ocrResultDiv{
+    font-size: 20px;
+    text-align: right;
+    line-height:30px;
+    word-spacing: 10px;
+}
+.ocr{
+    text-align: right;
+}
+
+#processedImageDiv{
+     padding: 0;
+    
+}
+
+
+
