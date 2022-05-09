@@ -1,6 +1,6 @@
 from itertools import count
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from webui.models import Image
 import cv2
@@ -35,31 +35,34 @@ def ocr(request):
     print("ocr metoduna geldik")
     context = {"success": False}
     try:
-        imageid = request.POST["imageid"]
-        version = request.POST["version"]
-    
-        coords_font = request.POST["coords_font"]
-        coords_x = request.POST["coords_x"]
-        coords_y = request.POST["coords_y"]
-        coords_w = request.POST["coords_w"]
-        coords_h = request.POST["coords_h"]
 
-
-        image = Image.objects.filter(imageid=imageid).get()
-        path = image.Image.url[1:]
-
-        #resmi gelen koordinatlara göre kırpalım
-        img = cv2.imread(path)
+        if request.POST:
+            imageid = request.POST.get("imageid", "")
+            print("PATHHHHHHHHHHHHHHHHHHHHHHHH", str(imageid))
+            version = request.POST.get("version", "")
         
-        print(coords_x,coords_y,coords_w,coords_h)
+            coords_font = request.POST.get("coords_font", "diger")
+            coords_x = request.POST.get("coords_x", "0")
+            coords_y = request.POST.get("coords_y", "0")
+            coords_w = request.POST.get("coords_w", "0")
+            coords_h = request.POST.get("coords_h", "0")
 
-        yh= int(coords_y)+int(coords_h)
-        xw= int(coords_x)+int(coords_w)
+
+            image = Image.objects.filter(imageid=imageid).get()
+            path = image.Image.url[1:]
         
-        cropped_img=img[int(coords_y):yh, int(coords_x):xw]
-        print(cropped_img)
+            #resmi gelen koordinatlara göre kırpalım
+            img = cv2.imread(path)
+            
+            print("COORDINATES ", coords_x,coords_y,coords_w,coords_h)
 
-        cv2.imwrite("./media/images/cropped_image.png", cropped_img)
+            yh= int(coords_y)+int(coords_h)
+            xw= int(coords_x)+int(coords_w)
+            
+            cropped_img=img[int(coords_y):yh, int(coords_x):xw]
+            print(cropped_img)
+
+            cv2.imwrite("./media/images/cropped_image.png", cropped_img)
 
         ################take token
         user_data = {
@@ -109,7 +112,8 @@ def ocr(request):
     except requests.exceptions.HTTPError as e:
         context["message"] = "What went wrong is ", str(e)
 
-    return JsonResponse(context, safe=False)
+    template_name = "ocr_page.html"
+    return render(request, template_name, context=context)
 
 
 def font_prediction(img_url):

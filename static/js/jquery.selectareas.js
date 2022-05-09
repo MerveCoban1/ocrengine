@@ -518,7 +518,7 @@
                     font_choice = font_choices.eq(area.id).val();
 
                     var font_name;
-                   
+
                     image.id = area.id;
                     image.name = image_name;
 
@@ -531,14 +531,14 @@
                     }
                     image.font = font_name;
                     console.log("AREA" + JSON.stringify(area))
-                    
+
 
                     //*********************************************************** */
 
                     const imageid = $("#imageid").val();
                     const version = $("#versionId").val();
                     const is_crop_image = $("#imageid").data("iscrop");
-                    
+
                     const imageurl = $("#image").attr("src");
                     if (imageid === null || imageid === "" || imageid === undefined) {
                         toastr.error("Resim yüklenmesinde hata oluştu!")
@@ -559,7 +559,7 @@
                         ratioWidth = width / $('#image').width();
                         ratioHeight = height / $('#image').height();
 
-                        
+
                         console.log("$('#image').width()" + $('#image').width())
 
                         realCoordinates.x = Math.round(area.x * ratioWidth);
@@ -574,29 +574,38 @@
                         } else {
                             window.waitBox(true);
                             //OCR isteğimizi yapalım
-                            console.log("ocr isteği yapıyoruz"); 
+                            console.log("ocr isteği yapıyoruz");
                             console.log("gönderilecek resim kordinatları:");
                             console.log(image);
-                            console.log("realCoordinates.x:",realCoordinates.x);
-                            $.post('ocr', {
-                                imageid: imageid,
-                                coords_font: image.font,
-                                coords_x: realCoordinates.x,
-                                coords_y: realCoordinates.y,
-                                coords_w: realCoordinates.w,
-                                coords_h: realCoordinates.h,
-                                version: version,
-                                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val()
-                            }).done(function (result) {
-                                window.waitBox(false);
-                                if (result.success) {
-                                    toastr.success(result.message ? result.message : "İşlem başarılı bir şekilde tamamlandı.");
-                                    $("textarea#txtResult").val(result.text);                                           
-                                
-                                } else {
-                                    toastr.error(result.message);
+                            console.log("realCoordinates.x:", realCoordinates.x);
+                            var ocr_view_url = 'ocr'
+
+                            $.ajax({
+                                method: 'POST',
+                                url: ocr_view_url,
+                                data: {
+                                    'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+                                    'imageid': imageid,
+                                    'coords_font': image.font,
+                                    'coords_x': realCoordinates.x,
+                                    'coords_y': realCoordinates.y,
+                                    'coords_w': realCoordinates.w,
+                                    'coords_h': realCoordinates.h,
+                                    'version': version,
+                                },
+                                datatype: 'json',
+                                success: function (data) {
+                                    toastr.success(data.message ? data.message : "İşlem başarılı bir şekilde tamamlandı.");
+                                    alert("OK! post req send to ocr view");
+                                    window.location.href = "ocr";
+
+                                },
+                                error: function (data) {
+
+                                    alert("NOT OK! post req can not send to ocr view");
                                 }
                             });
+
                         }
                     }
 
