@@ -160,33 +160,34 @@ def cropLines(request):
     context = {"success": False}
     try:
 
-        coordinates = request.POST.get('coordinates',False)
-        width = request.POST.get('width',False)
+        if request.POST:
+            coordinates = request.POST.get('coordinates',"")
+            width = request.POST.get('width',"")
 
-        print("croplines a gelen koordinatlar:")
-        print(coordinates)
-        print(width)
+            print("croplines a gelen koordinatlar:")
+            print(coordinates)
+            print(width)
 
-        ##klasörü temizleyelim
-        #shutil.rmtree("/media/images/cropped")
-#
-        ##dolduralım
-        #img = cv2.imread("/media/images/cropped_image.png")
-        #counter=1
-        #for sayi in range(0,len(coordinates),2):
-        #    height=coordinates[sayi+1]-coordinates[sayi]
-        #    cropped_img=img[int(coords_y):yh, int(coords_x):xw]
-#
-        #    cv2.imwrite("./media/images/cropped", cropped_img)
-        #    
-        #    counter+=1
-#
-        #yh= int(coords_y)+int(coords_h)
-        #xw= int(coords_x)+int(coords_w)
+            ##klasörü temizleyelim
+            #shutil.rmtree("/media/images/cropped")
+    #
+            ##dolduralım
+            #img = cv2.imread("/media/images/cropped_image.png")
+            #counter=1
+            #for sayi in range(0,len(coordinates),2):
+            #    height=coordinates[sayi+1]-coordinates[sayi]
+            #    cropped_img=img[int(coords_y):yh, int(coords_x):xw]
+    #
+            #    cv2.imwrite("./media/images/cropped", cropped_img)
+            #    
+            #    counter+=1
+    #
+            #yh= int(coords_y)+int(coords_h)
+            #xw= int(coords_x)+int(coords_w)
+            
         
-    
-        context["text"] =  "huj"
-        context["success"] = True
+            context["text"] =  "huj"
+            context["success"] = True
     except requests.exceptions.HTTPError as e:
         context["message"] = "What went wrong is ", str(e)
 
