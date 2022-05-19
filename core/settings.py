@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-^5%8qd*bdck1a_(5+m^pe$s@-5r$se*(j0t0zoj_3p*74m=&ui'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ocr-engine-page-layout-editor.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
