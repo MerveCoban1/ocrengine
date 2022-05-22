@@ -62,7 +62,7 @@ def ocr(request):
             cropped_img=img[int(coords_y):yh, int(coords_x):xw]
             print(cropped_img)
 
-            cv2.imwrite("./media/images/cropped_image.png", cropped_img)
+            cv2.imwrite("./static/images/cropped_image.png", cropped_img)
 
         ################take token
         user_data = {
