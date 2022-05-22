@@ -1,1 +1,1 @@
-web: gunicorn ocr-engine.wsgi --log-file -
+web: gunicorn core.wsgi --log-file -
