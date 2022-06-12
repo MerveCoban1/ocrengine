@@ -11,6 +11,13 @@ import json
 import requests
 # Create your views here.
 
+coords_x =0
+coords_y = 0
+coords_w =0
+coords_h = 0
+yh=0
+xw=0
+
 def home(request):
     template_name = "index.html"
     return render(request, template_name)
@@ -169,22 +176,22 @@ def cropLines(request):
             print(width)
 
             ##klasörü temizleyelim
-            #shutil.rmtree("/media/images/cropped")
-    #
+            shutil.rmtree("../media/images/cropped")
+    
             ##dolduralım
-            #img = cv2.imread("/media/images/cropped_image.png")
-            #counter=1
-            #for sayi in range(0,len(coordinates),2):
-            #    height=coordinates[sayi+1]-coordinates[sayi]
-            #    cropped_img=img[int(coords_y):yh, int(coords_x):xw]
-    #
-            #    cv2.imwrite("./media/images/cropped", cropped_img)
-            #    
-            #    counter+=1
-    #
-            #yh= int(coords_y)+int(coords_h)
-            #xw= int(coords_x)+int(coords_w)
-            
+            img = cv2.imread("../media/images/cropped_image.png")
+            counter=1
+            for sayi in range(0,len(coordinates),2):
+                height=coordinates[sayi+1]-coordinates[sayi]
+                cropped_img=img[int(coords_y):yh, int(coords_x):xw]
+    
+                cv2.imwrite("../media/images/cropped", cropped_img)
+              
+                counter+=1
+    
+            yh= int(coords_y)+int(coords_h)
+            xw= int(coords_x)+int(coords_w)
+            print(  "XH"+ xw +"........."+yh)
         
             context["text"] =  "huj"
             context["success"] = True
