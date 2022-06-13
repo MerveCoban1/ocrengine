@@ -58,6 +58,10 @@ def ocr(request):
             coords_w = request.POST.get("coords_w", "0")
             coords_h = request.POST.get("coords_h", "0")
 
+            request.session['coords_w'] = str(coords_w)
+            request.session['coords_h'] = str(coords_h)
+            request.session['coords_x'] = str(coords_x)
+            request.session['coords_y'] = str(coords_y)
 
             image = Image.objects.filter(imageid=imageid).get()
             path = image.Image.url[1:]
@@ -184,24 +188,37 @@ def cropLines(request):
     try:
 
         if request.POST:
-            coordinates = request.POST.get('coordinates',"")
+            coords_x = request.session.get('coords_x')
+            print("coords_x"+ str(coords_x))
+            coords_y = request.session.get('coords_y')
+            print("coords_y"+ str(coords_y))
+            coords_h = request.session.get('coords_h')
+            print("coords_h"+ str(coords_h))
+            coords_w = request.session.get('coords_w')
+            print("coords_w"+ str(coords_w))
+            
+            coordinates = request.POST.getlist('coordinates[]')
             width = request.POST.get('width',"")
-
             print("croplines a gelen koordinatlar:")
             print(coordinates)
             print(width)
-
+            
+            os.makedirs("./media/images/cropped", exist_ok=True)
             ##klasörü temizleyelim
-            shutil.rmtree("../media/images/cropped")
+            shutil.rmtree("./media/images/cropped")
     
+            yh= int(coords_y)+int(coords_h)
+            xw= int(coords_x)+int(coords_w)
+            print(  "XH"+ str(xw) +"........."+str(yh))
             ##dolduralım
-            img = cv2.imread("../media/images/cropped_image.png")
+            img = cv2.imread("./media/images/cropped_image.png")
             counter=1
             for sayi in range(0,len(coordinates),2):
-                height=coordinates[sayi+1]-coordinates[sayi]
+                print("IN coordinates FOR ")
+                height=int(coordinates[sayi+1])-int(coordinates[sayi])
                 cropped_img=img[int(coords_y):yh, int(coords_x):xw]
     
-                cv2.imwrite("../media/images/cropped", cropped_img)
+                cv2.imwrite("./media/images/cropped"+str(counter)+".jgp", cropped_img)
               
                 counter+=1
     

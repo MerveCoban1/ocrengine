@@ -121,12 +121,10 @@ $.get("getOcrResult").done(function (result) {
 
             console.log("elementRealCoordinates");
             console.log(elementRealCoordinates);
-
-
-
+            var ocr_view_url = 'cropLines'
             $.ajax({
                 method: 'POST',
-                url: 'cropLines',
+                url: ocr_view_url,
                 data: {
                     "coordinates": elementRealCoordinates,
                     "width": realWidth,
@@ -135,21 +133,19 @@ $.get("getOcrResult").done(function (result) {
                 datatype: 'json',
                 success: function (data) {
                     toastr.success(data.message ? data.message : "İşlem başarılı bir şekilde tamamlandı.");
-                    alert("OK! post req send to cropLines view");
-
-
+                    //alert("OK! post req send to cropLines view");	
                 },
                 error: function (data) {
-
                     alert("NOT OK! post req can not send to cropLines view");
                 }
             }).done(function (result) {
-                //  if (result.success) {
-                //      //linesCount = data;
-                //   } else {
-                //       console.log("can not open line mod");
-                //   }
+                //  if (result.success) {	
+                //      //linesCount = data;	
+                //   } else {	
+                //       console.log("can not open line mod");	
+                //   }	
             }).then(function () {
+                console.log("*********************************************" + inputWidth + "****" + inputHeight)
                 $("#processedImageDiv").children().remove();
                 let elements = ``;
                 var i;
