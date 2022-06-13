@@ -203,26 +203,32 @@ def cropLines(request):
             print(coordinates)
             print(width)
             
-            os.makedirs("./media/images/cropped", exist_ok=True)
+            #os.makedirs("./media/images/cropped", exist_ok=True)
             ##klasörü temizleyelim
-            shutil.rmtree("./media/images/cropped")
+            #shutil.rmtree("./media/images/cropped")
     
             yh= int(coords_y)+int(coords_h)
             xw= int(coords_x)+int(coords_w)
             print(  "XH"+ str(xw) +"........."+str(yh))
             ##dolduralım
             img = cv2.imread("./media/images/cropped_image.png")
+            print("imageeeeeeeeee")
+            print(img)
             counter=1
             for sayi in range(0,len(coordinates),2):
                 print("IN coordinates FOR ")
                 height=int(coordinates[sayi+1])-int(coordinates[sayi])
-                print("height"+ str(height))
+               
 
-                cropped_img=img[int(coords_y):int(coords_y)+int(height), int(coords_x):xw]
+                #yüksekliğin nerden başladığı ve yüksekliği
+                
+                cropped_img=img[int(coordinates[sayi]):(height+int(coordinates[sayi])), 0:int(width)]
+                
                 coords_y = int(coords_y) +  int(height)
-                filename = "./media/images/crop"+str(counter)+".png"
+                filename = "./media/images/cropped/crop"+str(counter)+".png"
                 cv2.imwrite(filename, cropped_img)
                 counter+=1
+               
     
             yh= int(coords_y)+int(coords_h)
             xw= int(coords_x)+int(coords_w)
