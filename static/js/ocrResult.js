@@ -48,6 +48,10 @@ $.get("getOcrResult").done(function (result) {
                 firstHeight = secondHeight;
             }
             $("#ocrResultDiv").append(elements);
+
+            let elements2 = ``;
+            elements2 += `<p>Girdiğiniz dosyanın fontu: ` + result.fontText + `</p><br>`;
+            $("#fontResultDiv").append(elements2);
         }
 
         var counter;
@@ -117,12 +121,10 @@ $.get("getOcrResult").done(function (result) {
 
             console.log("elementRealCoordinates");
             console.log(elementRealCoordinates);
-
-
-
+            var ocr_view_url = 'cropLines'
             $.ajax({
                 method: 'POST',
-                url: 'cropLines',
+                url: ocr_view_url,
                 data: {
                     "coordinates": elementRealCoordinates,
                     "width": realWidth,
@@ -131,21 +133,19 @@ $.get("getOcrResult").done(function (result) {
                 datatype: 'json',
                 success: function (data) {
                     toastr.success(data.message ? data.message : "İşlem başarılı bir şekilde tamamlandı.");
-                    alert("OK! post req send to cropLines view");
-
-
+                    //alert("OK! post req send to cropLines view");	
                 },
                 error: function (data) {
-
                     alert("NOT OK! post req can not send to cropLines view");
                 }
             }).done(function (result) {
-                //  if (result.success) {
-                //      //linesCount = data;
-                //   } else {
-                //       console.log("can not open line mod");
-                //   }
+                if (result.success) {
+                    linesCount = elementRealCoordinates.length / 2;
+                } else {
+                    console.log("can not open line mod");
+                }
             }).then(function () {
+                console.log("*********************************************" + inputWidth + "****" + inputHeight)
                 $("#processedImageDiv").children().remove();
                 let elements = ``;
                 var i;
@@ -169,7 +169,7 @@ $.get("getOcrResult").done(function (result) {
                     //    //inputHeight = { inputHeight };
                     //
                     var inputWidth = $('.section1').width();
-                    elements += ` <div class="row" style="text-align:center;"><img class="" style="object-fit: contain;width:${inputWidth}px;" src="./images/cropped/lines/${i}.jpg"> </div>`;
+                    elements += ` <div class="row" style="text-align:center;"><img class="" style="object-fit: contain;width:${inputWidth}px;" src="./media/images/cropped/crop${i}.png"> </div>`;
                     elements += ` <div class="row" style="text-align:center;"><input class="ocr ocrinput" style="width:${inputWidth}px; height:${inputHeight}px; text-align:right;border:none;border-right: 2px solid gray;" type="text"  value="${ocrValue}"></input> </div>`;
                 }
 
@@ -333,7 +333,6 @@ $.get("getOcrResult").done(function (result) {
         toastr.error(result.message);
     }
 });
-
 
 
 
