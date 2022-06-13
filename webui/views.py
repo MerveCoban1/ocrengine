@@ -216,15 +216,17 @@ def cropLines(request):
             for sayi in range(0,len(coordinates),2):
                 print("IN coordinates FOR ")
                 height=int(coordinates[sayi+1])-int(coordinates[sayi])
-                cropped_img=img[int(coords_y):yh, int(coords_x):xw]
-    
-                cv2.imwrite("./media/images/cropped"+str(counter)+".jgp", cropped_img)
-              
+                print("height"+ str(height))
+
+                cropped_img=img[int(coords_y):int(coords_y)+int(height), int(coords_x):xw]
+                coords_y = int(coords_y) +  int(height)
+                filename = "./media/images/crop"+str(counter)+".png"
+                cv2.imwrite(filename, cropped_img)
                 counter+=1
     
             yh= int(coords_y)+int(coords_h)
             xw= int(coords_x)+int(coords_w)
-            print(  "XH"+ xw +"........."+yh)
+            print(  "XH"+ str(xw) +"........."+ str(yh))
         
             context["text"] =  "huj"
             context["success"] = True
