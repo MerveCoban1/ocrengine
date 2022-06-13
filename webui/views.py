@@ -96,7 +96,7 @@ def ocr(request):
 
         ################make ocr with access token
 
-        image_url = "http://www.mervecoban.me/images/cropped/image.jpg"  # give exact path of image when hosted
+        image_url = "https://ocr-engine-page-layout-editor.herokuapp.com/media/images/cropped_image.png"  # give exact path of image when hosted
 
         ocr_data = {
             'username': 'test1234',
