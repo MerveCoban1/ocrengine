@@ -48,6 +48,10 @@ $.get("getOcrResult").done(function (result) {
                 firstHeight = secondHeight;
             }
             $("#ocrResultDiv").append(elements);
+
+            let elements2 = ``;
+            elements2 += `<p>Girdiğiniz dosyanın fontu: ` + result.fontText + `</p><br>`;
+            $("#fontResultDiv").append(elements2);
         }
 
         var counter;

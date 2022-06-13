@@ -9,6 +9,7 @@ import numpy as np
 
 import json
 import requests
+import os
 # Create your views here.
 
 coords_x =0
@@ -29,9 +30,12 @@ def upload_file(request):
     if request.method == 'POST' and request.FILES['file']:
         image = Image(Image=request.FILES['file'])
         image.save()
+        os.remove("./static/json/imgUrl.json")
         print("image url:")
         print(image.Image.url)
-        font_prediction(image.Image.url)
+        with open('./static/json/imgUrl.json', 'w') as json_dosya:
+            json.dump(image.Image.url, json_dosya)
+        
         context["imageurl"] = image.Image.url
         context["imageid"] = image.imageid
 
@@ -144,6 +148,11 @@ def font_prediction(img_url):
     print("prediction:")
     print("This image {} most likely belongs to {} with a {:.2f} percent confidence.".format(img_url,class_names[np.argmax(score)], 100 * np.max(score)))
     print("prediction bitti...")
+    
+   
+    fontPredictionResult=class_names[np.argmax(score)]
+    return fontPredictionResult
+    
    
 
 def ocr_page(request):
@@ -156,12 +165,19 @@ def getOcrResult(request):
         jsonData = json.load(f)
     print(jsonData)
 
+    with open('./static/json/imgUrl.json') as f:
+        imagePath=json.load(f)
+    
+    predictionResult=font_prediction(imagePath)
+
     context = {"success": True}
     context["text"] =  jsonData
+    context["fontText"] =  predictionResult
     return JsonResponse(context, safe=False)
 
 
 def cropLines(request):
+
     import os
     import shutil
     context = {"success": False}
@@ -199,3 +215,4 @@ def cropLines(request):
         context["message"] = "What went wrong is ", str(e)
 
     return JsonResponse(context, safe=False)
+
