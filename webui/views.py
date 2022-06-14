@@ -225,7 +225,7 @@ def cropLines(request):
                 cropped_img=img[int(coordinates[sayi]):(height+int(coordinates[sayi])), 0:int(width)]
                 
                 coords_y = int(coords_y) +  int(height)
-                filename = "./media/images/cropped/crop"+str(counter)+".png"
+                filename = "./media/images/crop"+str(counter)+".png"
                 cv2.imwrite(filename, cropped_img)
                 counter+=1
                

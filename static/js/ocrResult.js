@@ -169,7 +169,7 @@ $.get("getOcrResult").done(function (result) {
                     //    //inputHeight = { inputHeight };
                     //
                     var inputWidth = $('.section1').width();
-                    elements += ` <div class="row" style="text-align:center;"><img class="" style="object-fit: contain;width:${inputWidth}px;" src="./media/images/cropped/crop${i}.png"> </div>`;
+                    elements += ` <div class="row" style="text-align:center;"><img class="" style="object-fit: contain;width:${inputWidth}px;" src="./media/images/crop${i}.png"> </div>`;
                     elements += ` <div class="row" style="text-align:center;"><input class="ocr ocrinput" style="width:${inputWidth}px; height:${inputHeight}px; text-align:right;border:none;border-right: 2px solid gray;" type="text"  value="${ocrValue}"></input> </div>`;
                 }
 
